@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Movement : MonoBehaviour
 {
@@ -29,6 +30,16 @@ public class Movement : MonoBehaviour
         {
             Vector3 vectorJump = new Vector3(0, jumpForce, 0);
             rigidbody.AddForce(vectorJump * jumpForce * Time.deltaTime, ForceMode.Impulse);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            Debug.Log(collision.gameObject.tag);
+
+            SceneManager.LoadScene("SampleScene");
         }
     }
 }
