@@ -41,5 +41,9 @@ public class Movement : MonoBehaviour
 
             SceneManager.LoadScene("SampleScene");
         }
+        else if (collision.gameObject.tag == "WeakSpot")
+        {
+            Destroy(collision.transform.parent.gameObject);
+        }
     }
 }
