@@ -8,7 +8,9 @@ public class Movement : MonoBehaviour
 
     public float speed;
     public float jumpForce;
-    private Rigidbody rigidbody;
+    private new Rigidbody rigidbody;
+    public GameObject ourProjectile;
+    private bool canShoot = false;
 
     // Start is called before the first frame update
     void Start()
@@ -31,19 +33,38 @@ public class Movement : MonoBehaviour
             Vector3 vectorJump = new Vector3(0, jumpForce, 0);
             rigidbody.AddForce(vectorJump * jumpForce * Time.deltaTime, ForceMode.Impulse);
         }
+
+        if (Input.GetMouseButtonDown(0) && canShoot == true)
+        {
+            Instantiate(ourProjectile, transform.position, Quaternion.identity);
+            Debug.Log("tirando balas");
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.tag == "Projectile")
         {
             Debug.Log(collision.gameObject.tag);
 
             SceneManager.LoadScene("SampleScene");
         }
-        else if (collision.gameObject.tag == "WeakSpot")
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "WeakSpot")
         {
-            Destroy(collision.transform.parent.gameObject);
+            Destroy(other.transform.parent.gameObject);
+            canShoot = true;
+        }
+        if (other.gameObject.tag == "Enemy")
+        {
+            Debug.Log(other.gameObject.tag);
+
+            SceneManager.LoadScene("SampleScene");
         }
     }
+
+    
 }
